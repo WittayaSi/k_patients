@@ -7,7 +7,7 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <center><p><h3>ข้อมูลผู้ป่วย changed git</h3></p></center>
+                        <center><p><h3>ข้อมูลผู้ป่วย</h3></p></center>
                     </div>
                     <div class="panel-body">
                         
