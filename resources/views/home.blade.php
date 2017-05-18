@@ -12,7 +12,7 @@
                     
                     <!-- sub panel 1 -->
                     <div class="col-md-10 col-md-offset-1">
-                        <div class="panel panel-success">
+                        <div class="panel panel-warning">
                             <div class="panel-heading">
                                 ผู้ป่วยนัดวันนี้
                             </div>

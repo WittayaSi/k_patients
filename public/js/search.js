@@ -16,12 +16,7 @@ new Vue({
             'lName': ''
         },
         option: 'b',
-        hospital: {}
-    },
-    created() {
-        this.$http.get('/alienPerson/api/hospcodes').then((res) =>{
-            this.hospital = res.data.hospital
-        })
+        hospital: hospital
     },
     filters: {
         getPrename(value) {
@@ -93,36 +88,36 @@ new Vue({
                 console.log(this.persons)
             })
         },
-        deleteRecord(id){
+        deleteRecord(id) {
             console.log(id)
             var self = this
             swal({
-                title: 'คุณแน่ใจว่าต้องการลบ ?',
-                text: "ไม่ต้องการลบกด ยกเลิก !",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'ยืนยัน !',
-                cancelButtonText: 'ยกเลิก',
-                closeOnConfirm: true
-            },
-            function(isConfirm) {
-                if (isConfirm) {
-                  self.$http.delete("/alienPerson/data/"+id).then((res) => {
-                      console.log('Record Delete Successfully')
-                      location.href = '/alienPerson/data/search';
-                  })
-                  swal(
-                      'Deleted!',
-                      'Your file has been deleted.',
-                      'success'
-                  );
-                    return true;
-                } else {
-                    return false;
-                }
-            }.bind(self))
+                    title: 'คุณแน่ใจว่าต้องการลบ ?',
+                    text: "ไม่ต้องการลบกด ยกเลิก !",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'ยืนยัน !',
+                    cancelButtonText: 'ยกเลิก',
+                    closeOnConfirm: true
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        self.$http.delete("/alienPerson/data/" + id).then((res) => {
+                            console.log('Record Delete Successfully')
+                            location.href = '/alienPerson/data/search';
+                        })
+                        swal(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        );
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }.bind(self))
         }
     }
 })

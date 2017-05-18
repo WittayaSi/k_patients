@@ -116,7 +116,8 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <div class="title">
-                                <i class="fa fa-vcard fa-lg"></i> ระบบติดตามและนัดหมาย <small>( คนไข้ในพระราชานุเคราะห์ )</small>
+                                <i class="fa fa-vcard fa-lg"></i> ระบบติดตามและนัดหมาย <small>( คนไข้ในพระราชานุเคราะห์ )</small> <br>
+                                <small>Patient appointment and follow-up System.</small> 
                             </div>
                         </div>
                         <div class="panel-body center">
