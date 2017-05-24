@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         // $schedule->call('App\Http\Controllers\HomeController@lineNotify')->everyMinute();
-        $schedule->command('line:notify')->everyMinute();
+        $schedule->command('line:notify')->everyFiveMinutes();
     }
 
     /**
