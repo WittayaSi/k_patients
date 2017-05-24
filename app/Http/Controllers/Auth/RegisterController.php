@@ -62,10 +62,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //$confirmation_code = hash_hmac('sha256', str_random(40), config('app.key'));
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            //'confirmation_code' => $confirmation_code
         ]);
     }
 }

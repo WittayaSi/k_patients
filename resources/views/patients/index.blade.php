@@ -3,114 +3,39 @@
 @section('content')
 <div class="container">
     <div id="vueApp">
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
-                {{ csrf_field() }}
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header alert alert-success">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <center><h4 class="modal-title" id="myModalLabel"><i class="fa fa-user-plus fa-lg"></i>&nbsp&nbsp ลงทะเบียน</h4></center>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Name</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    <!--@if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif-->
-                                    @if(Session::has('errors'))
-                                        <script>
-                                            $(document).ready(function(){
-                                                $('#myModal').modal({show: true});
-                                            })
-                                        </script>
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> ยกเลิก</button>
-                            <button type="submit" class="btn btn-primary btn-sm" name="form_r"><i class="fa fa-save fa-fw"></i> บันทึก</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-              </form>
-            <!-- /.modal-dialog -->
-            </div>
-            <!-- end modal -->
+    
+        @include('patients.modal.modal_add_patient')
+        @include('patients.modal.modal_view_patient')
+        
+        
 
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <center><p><h3>ข้อมูลผู้ป่วย</h3></p></center>
+                        <center><p><h3>ข้อมูลผู้ป่วยในพระราชานุเคราะห์ทั้งหมด</h3></p></center>
                     </div>
                     <div class="panel-body">
+
+                        <div class="alert alert-success col-md-10 col-md-offset-1" transition="statusBar" style="text-align: center" v-if="statusBar">
+                            เพิ่มข้อมูลผู้ป่วยรายใหม่ สำเร็จ 
+                        </div>
                         
                         <!-- sub panel 1 -->
-                        <div class="col-md-10 col-md-offset-1">
-                            <a data-toggle="modal" data-target="#myModal" class="btn btn-primary pull-right" style="margin-top: -10px; margin-right: 10px; cursor:pointer;"><i class="fa fa-plus fa-fw"></i> เพิ่มผู้ป่วย </a>
+                        <div class="col-md-12">
                             <div class="panel panel-success">
                                 <div class="panel-heading">
-                                <center><p><h4>ค้นหาผู้ป่วย</h4></p></center>
-                                <hr>
+                                
                                     <!-- form search patients -->
                                     <div class="row">
                                         <p style="text-align: center">
                                             <input type="radio" v-model="option" value="b"> สถานบริการ &nbsp&nbsp
                                             <input type="radio" v-model="option" value="a"> ชื่อ - นามสกุล
+                                            <a data-toggle="modal" data-target="#modalAddPatient" class="btn btn-primary pull-right" style="margin-top: -20px; margin-right: 10px; cursor:pointer;"><i class="fa fa-plus fa-fw"></i> เพิ่มผู้ป่วยรายใหม่ </a>
                                         </p>
                                         <p v-if="option === 'b'" class="col-sm-4 col-sm-offset-4">
                                             <label for="hoscode">สถานบริการ</label>
-                                            <select class="form-control" name="hoscode" v-model="hoscode" id="hoscode" @change="getPersonById">
+                                            <select class="form-control" name="hoscode" v-model="hoscode" id="hoscode" @change="getPatientByHosId">
                                                 <option value="">
                                                     เลือกสถานบริการ
                                                 </option>
@@ -120,43 +45,75 @@
                                         <div v-if="option === 'a'" class="row">
                                             <div class="form-group col-sm-4 col-sm-offset-2">
                                                 <label for="txtName">ชื่อ</label>
-                                                <input type="text" id="txtName" class="form-control" v-model="txtName" @keyup="getPersonByName" :autofocus="true"/>
+                                                <input type="text" id="txtName" class="form-control" v-model="txtName" @keyup="getPatientByName" :autofocus="true"/>
                                             </div>
                                             <div class="form-group col-sm-4">
                                                 <label for="txtLastName">นามสกุล</label>
-                                                <input type="text" id="txtLastName" class="form-control" v-model="txtLastName" @keyup="getPersonByLastName"/>
+                                                <input type="text" id="txtLastName" class="form-control" v-model="txtLastName" @keyup="getPatientByLastName"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- end form search patients--> 
+                                    <!-- end form search patients-->
                                 </div>
                                 <div class="panel-body">
-                                    
                                     <!-- search data  -->
+                                    <div>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr class="alert-info">
-                                                    <th style="text-align: center">เลขประจำตัวผู้ป่วย(HN)</th>
+                                                    <!--<th style="text-align: center">รหัสสถานบริการ</th>-->
+                                                    <th style="text-align: center">รหัส (HN)</th>
                                                     <th style="text-align: center">ชื่อ - สกุล</th>
+                                                    <th style="text-align: center">อาการป่วย</th>
+                                                    <th style="text-align: center">ที่อยู่</th>
                                                     <th style="text-align: center">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td style="text-align: center">
+                                                <tr v-for="p in patients">
+                                                    <!--<td width="10%" style="text-align: center">@{{ p.hospcode }}</td>-->
+                                                    <td width="7%" style="text-align: center">@{{ p.hn }}</td>
+                                                    <td width="20%">@{{ p.detail }}@{{ p.name }}  @{{ p.lname }}</td>
+                                                    <td width="35%">@{{ p.name_disease }}</td>
+                                                    <td width="26%">@{{ p.add_no }} หมู่ที่ @{{ p.moo }}  @{{ p.vill_name }} @{{ p.tambonname }}</td>
+                                                    <td width="12%" style="text-align: center">
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-info" aria-label="รายละเอียด"><i class="fa fa-search"></i></button>
-                                                            <button type="button" class="btn btn-warning" aria-label="แก้ไข"><i class="fa fa-pencil-square-o"></i></button>
-                                                            <button type="button" class="btn btn-danger" aria-label="ลบ"><i class="fa fa-trash"></i></button>
+                                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalViewPatient" @click="getPatient(p.id_no)"><i class="fa fa-search"></i></button>
+                                                            <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></button>
+                                                            @if(Auth::user()->is_admin === 'Y')
+                                                                <button type="button" class="btn btn-danger btn-sm" @click="deletePatient(p.id_no)"><i class="fa fa-trash"></i></button>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!-- Pagination -->
+                                    <nav class="pull-right">
+                                        <ul class="pagination">
+                                            <li v-if="pagination.current_page > 1">
+                                                <a href="#" aria-label="Previous"
+                                                @click.prevent="changePage(pagination.current_page - 1)">
+                                                    <span aria-hidden="true">ก่อนหน้า</span>
+                                                </a>
+                                            </li>
+                                            <li v-for="page in pagesNumber"
+                                                :class="[ page == isActived ? 'active' : '']">
+                                                <a href="#"
+                                                @click.prevent="changePage(page)">@{{ page }}</a>
+                                            </li>
+                                            <li v-if="pagination.current_page < pagination.last_page">
+                                                <a href="#" aria-label="Next"
+                                                @click.prevent="changePage(pagination.current_page + 1)">
+                                                    <span aria-hidden="true">ถัดไป</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    <!-- End pagination -->
                                     <!-- end search data  -->
                                     
                                 </div>
@@ -175,6 +132,18 @@
 @push('scripts')
     <script>
         var hospital = {!! json_encode($hospital) !!}
+        var hos_ref = {!! json_encode($hos_ref) !!}
+        var education = {!! json_encode($edu) !!}
+        var mstatus = {!! json_encode($mstatus) !!}
+        var nation = {!! json_encode($nation) !!}
+        var occupation = {!! json_encode($occup) !!}
+        var prename = {!! json_encode($prename) !!}
+        var religion = {!! json_encode($religion) !!}
+        var tambon = {!! json_encode($tambon) !!}
+        var disease = {!! json_encode($disease) !!}
+        var hn_str = {!! json_encode($hn_str) !!}
+        var doctor = {!! json_encode($doctor) !!}
     </script>
-    <script src="{{ asset('/js/search.js') }}"></script>
+
+    <script src="{{ asset('/js/patients/index.js') }}"></script>
 @endpush

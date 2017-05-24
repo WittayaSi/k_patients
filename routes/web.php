@@ -25,6 +25,18 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 Route::resource('/patient', 'PatientController');
 
+Route::resource('/appointment', 'AppointmentController');
+
+Route::get('/home/getNowAppoint', 'HomeController@getNowAppoint');
+Route::get('/home/lineNotify', 'HomeController@lineNotify');
+
+// Api router
+Route::get('/api/getAllPatient', 'ApiController@getAllPatient');
+Route::post('/api/getPatientByIdNo', 'ApiController@getPatientByIdNo');
+Route::post('/api/getPatientByFullName', 'ApiController@getPatientByFullName');
+Route::post('/api/getPatientByHosId', 'ApiController@getPatientByHosId');
+Route::post('/api/getAppointment', 'ApiController@getAppointment');
+
 Route::get('/test', function() {
 
     // function send_line_notify($message, $token)

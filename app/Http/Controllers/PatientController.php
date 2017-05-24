@@ -3,8 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Chospital;
 use App\Cdisease;
+use App\Ceducation;
+use App\Cmstatus;
+use App\Cnation;
+use App\Coccupation;
+use App\Cprename;
+use App\Creligion;
+use App\Ctambon;
+use App\Patient;
+use App\Chospitalrefer;
+use App\Doctor;
 
 class PatientController extends Controller
 {
@@ -22,7 +33,39 @@ class PatientController extends Controller
     public function index()
     {
         $data['hospital'] = Chospital::select('hoscode', 'hosname')->get();
+        $data['hos_ref'] = Chospitalrefer::all();
+        $data['edu'] = Ceducation::all();
+        $data['mstatus'] = Cmstatus::all();
+        $data['nation'] = Cnation::all();
+        $data['occup'] = Coccupation::all();
+        $data['prename'] = Cprename::all();
+        $data['religion'] = Creligion::all();
+        $data['tambon'] = Ctambon::all();
+        $data['disease'] = Cdisease::all();
+        $data['doctor'] = Doctor::all();
+
+        $data['hn_str'] = $this->newHn();
+
         return view('patients/index', $data);
+    }
+
+    private function newHn(){
+        $hn_str = '';
+        $d = DB::table('hn_ref')->select('last_hn')->first();
+        $last_hn = $d->last_hn;
+        $new_hn = (int)$last_hn + 1;
+
+        if($new_hn < 10){
+            $hn_str = 'KP000' . $new_hn;
+        }else if($new_hn < 100){
+            $hn_str = 'KP00' . $new_hn;
+        }else if($new_hn < 1000){
+            $hn_str = 'KP0' . $new_hn;
+        }else{
+            $hn_str = 'KP' . $new_hn;
+        }
+
+        return $hn_str;
     }
 
     /**
@@ -32,7 +75,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        return view('patients/create');
+        //return view('patients/create');
     }
 
     /**
@@ -43,7 +86,61 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // $this->validate($request, [
+        //     'pic_name' => 'image|mimes:jpeg,png,jpg',
+        // ]);
+
+        $this->validate($request, [
+            'idNo' => 'max:13',
+        ]);
+
+        //$strRand = substr(md5(microtime()),rand(0,26),5);
+        //$strRand = rand(10000,50000);
+        //$imageName = $request['hospcode'].$strRand;
+
+        $patient = new Patient();
+
+        $patient->id_no = $request['idNo'];
+        $patient->hospcode = $request['hospcode'];
+        $patient->hn = $request['hn'];
+        $patient->first_sick = $request['first_sick'];
+        $patient->recieve_date = $request['recieve_date'];
+        $patient->prename = $request['preName'];
+        $patient->name = $request['fName'];
+        $patient->lname = $request['lName'];
+        $patient->birth = $request['dob'];
+        $patient->sex = $request['sex'];
+        $patient->race = $request['race'];
+        $patient->nation = $request['nation'];
+        $patient->mstatus = $request['mStatus'];
+        $patient->education = $request['education'];
+        $patient->occupation = $request['occupation'];
+        $patient->religion = $request['religion'];
+        $patient->add_no = $request['address_no'];
+        $patient->moo = $request['moo'];
+        $patient->vill_name = $request['village'];
+        $patient->tambon = $request['tambon'];
+        $patient->ampur = $request['ampur'];
+        $patient->changwat = $request['changwat'];
+
+        $new_hn = (int)substr(($request['hn']),2);
+
+        if(DB::table('hn_ref')->where('id', 1)->update(['last_hn' => $new_hn])){
+            if($patient->save()){
+                $hn_new = $this->newHn();
+                $res = [
+                    'success' => 'successfully',
+                    'rawData' => $hn_new
+                ];
+                return response()->json($res);
+            }else{
+                return 'failed';
+            }
+        }else{
+            return 'failed';
+        }
+
     }
 
     /**
@@ -89,5 +186,6 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
+        Patient::destroy($id);
     }
 }

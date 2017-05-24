@@ -116,8 +116,8 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <div class="title">
-                                <i class="fa fa-vcard fa-lg"></i> ระบบติดตามและนัดหมาย <small>( คนไข้ในพระราชานุเคราะห์ )</small> <br>
-                                <small>Patient appointment and follow-up System.</small> 
+                                <i class="fa fa-vcard fa-lg"></i> ระบบติดตามและนัดหมาย <small>( ผู้ป่วยในพระราชานุเคราะห์)</small> <br>
+                                <small>อำเภอท่าสองยาง จังหวัดตาก</small> 
                             </div>
                         </div>
                         <div class="panel-body center">
@@ -127,7 +127,7 @@
                             </div>
 
                             <div class="col-md-5">
-                                <a class="btn btn-primary btn-sm pull-right m-b-md" data-toggle="modal" data-target="#myModal" style="cursor:pointer;"><i class="fa fa-user-plus fa-fw"></i> ลงทะเบียน</a>
+                                <!--<a class="btn btn-primary btn-sm pull-right m-b-md" data-toggle="modal" data-target="#myModal" style="cursor:pointer;"><i class="fa fa-user-plus fa-fw"></i> ลงทะเบียน</a>-->
                                 <div class="panel panel-success">
                                     <div class="panel-heading">
                                         <i class="fa fa-sign-in"></i> เข้าสู่ระบบ
