@@ -15,10 +15,12 @@
     <link rel="stylesheet" href="{{ asset('css/app-style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sweetalert.css') }}">
+    <link rel="stylesheet" href="{{ asset('fullcalendar/fullcalendar.css') }}">
 
     <!-- Scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" charset="utf-8"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('fullcalendar/moment.min.js') }}"></script>
 
 </head>
 <body>
@@ -50,7 +52,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="{{ Request::is('patient') ? 'active' : '' }}"><a href="{{ url('/patient') }}"><i class="fa fa-address-book fa-lg"></i> ข้อมูลผู้ป่วย</a></li>
-                        <li class="{{ Request::is('appoint') ? 'active' : '' }}"><a href="{{ url('/appoint') }}"><i class="fa fa-newspaper-o fa-lg"></i> รายงานการนัด</a></li>
+                        <li class="{{ Request::is('appointment') ? 'active' : '' }}"><a href="{{ url('/appointment') }}"><i class="fa fa-newspaper-o fa-lg"></i> รายงานการนัด</a></li>
                         @if(Auth::check() && Auth::user()->is_admin === 'Y')
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle {{ Request::is('setting/*') ? 'active' : '' }}" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -140,7 +142,7 @@
             </div>
         </nav>
         <div class="container">
-            <p class="label label-warning">{{ date('l F t , Y') }}</p>
+            <p class="label label-warning">{{ date('l F d , Y') }}</p>
         </div>
         
         @yield('content')
@@ -151,6 +153,8 @@
     <script src="{{ asset('/js/vue.min.js')}}"></script>
     <script src="{{ asset('/js/vue-resource.min.js')}}"></script>
     <script src="{{ asset('/js/axios.min.js')}}"></script>
+    <script src="{{ asset('/fullcalendar/fullcalendar.js') }}"></script>
+    <script src="{{ asset('/fullcalendar/locale/th.js') }}"></script>
     @stack('scripts')
     
 </body>

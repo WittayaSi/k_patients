@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Appointment;
+use App\Chospitalrefer;
+use App\Doctor;
+
 
 class AppointmentController extends Controller
 {
@@ -12,9 +16,60 @@ class AppointmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+     {
+        $this->middleware('auth');
+     } 
+
     public function index()
-    {
-        //
+    {   
+        $data['hos_ref'] = Chospitalrefer::all();
+        $data['doctor'] = Doctor::all();
+        $data['patient'] = DB::table('patients as p')
+            ->select('p.id_no', 'p.hn', 'cp.detail', 'p.name', 'p.lname')
+            ->leftJoin('cprenames as cp', 'cp.id_prename', '=', 'p.prename')
+            ->get();
+
+        $appoints = DB::select('
+            select a.*, d.*,c.id_doctor, c.name_doctor
+            from appointments as a
+            left join (
+                select p.*, cp.detail
+                from patients as p
+                left join cprenames as cp on (cp.id_prename = p.prename)
+            ) as d on (d.id_no = a.id_no)
+            left join doctors c on (c.id_doctor = a.doctor_id)
+            order by c.id_doctor ASC'
+        );
+
+        $events = [];
+
+        foreach($appoints as $a){
+            $events[] = \Calendar::event(
+                $a->detail.$a->name.' '.$a->lname, //event title
+                true, //full day event
+                $a->app_date, //START TIME
+                $a->app_date, //END TIME
+                $a->id, //event id
+                [
+                    'url' => '#'
+                ] // url when click
+            );
+        }
+
+        $data['calendar']= \Calendar::addEvents($events)
+                    ->setOptions([
+                        'firstDay' => 1,
+                        'eventClick' => function(){
+                            alert('555555555');
+                        }
+                    ])->setCallbacks([
+                        // 'viewRender' => 'function() {alert("Callbacks!");}'
+                    ]);
+
+        // return response()->json($events);
+        return view('appointments/index', $data);
     }
 
     /**

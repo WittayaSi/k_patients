@@ -56,50 +56,50 @@ class HomeController extends Controller
         return response()->json($res);
     }
 
-    public function lineNotify()
-    {
-        $date_tomorow = date('Y-m-d', strtotime('tomorrow'));
+    // public function lineNotify()
+    // {
+    //     $date_tomorow = date('Y-m-d', strtotime('tomorrow'));
 
-        $appoint_tomorrow = DB::select('
-            select a.*, d.*,c.id_doctor, c.name_doctor
-            from appointments as a
-            left join (
-                select p.*, cp.detail
-                from patients as p
-                left join cprenames as cp on (cp.id_prename = p.prename)
-            ) as d on (d.id_no = a.id_no)
-            left join doctors c on (c.id_doctor = a.doctor_id)
-            where a.app_date = "' . $date_tomorow . '"
-            order by c.id_doctor ASC'
-        );
+    //     $appoint_tomorrow = DB::select('
+    //         select a.*, d.*,c.id_doctor, c.name_doctor
+    //         from appointments as a
+    //         left join (
+    //             select p.*, cp.detail
+    //             from patients as p
+    //             left join cprenames as cp on (cp.id_prename = p.prename)
+    //         ) as d on (d.id_no = a.id_no)
+    //         left join doctors c on (c.id_doctor = a.doctor_id)
+    //         where a.app_date = "' . $date_tomorow . '"
+    //         order by c.id_doctor ASC'
+    //     );
 
-        $content = "";
-        foreach($appoint_tomorrow as $a){
-            $content = $content . ($a->detail).($a->name).' '.($a->lname).', ';
-        }
+    //     $content = "";
+    //     foreach($appoint_tomorrow as $a){
+    //         $content = $content . ($a->detail).($a->name).' '.($a->lname).', ';
+    //     }
 
-        $app_no = count($appoint_tomorrow);
+    //     $app_no = count($appoint_tomorrow);
 
-        // line notify 
-        if($app_no > 0) {
+    //     // line notify 
+    //     if($app_no > 0) {
 
-            $token = 'GNYga83I4mg9roJYc8C2NXGlGb42dCDUDFUUVLwRZWF';
-            $ln = new LineNotify($token);
+    //         $token = 'GNYga83I4mg9roJYc8C2NXGlGb42dCDUDFUUVLwRZWF';
+    //         $ln = new LineNotify($token);
 
-            $message = $message = 'พรุ่งนี้ '. $date_tomorow .' มีนัดหมาย จำนวน ' . $app_no . ' คน คือ ' .
-                       $content;
-            $ln->send($message);
+    //         $message = $message = 'พรุ่งนี้ '. $date_tomorow .' มีนัดหมาย จำนวน ' . $app_no . ' คน คือ ' .
+    //                    $content;
+    //         $ln->send($message);
 
-        }
-        //end line notify
+    //     }
+    //     //end line notify
 
-        $res = [
-            'rawData' => $appoint_tomorrow,
-            'date_tomorrow' => $date_tomorow,
-            'app_no' => $app_no,
-            'message' => $message
-        ];
+    //     $res = [
+    //         'rawData' => $appoint_tomorrow,
+    //         'date_tomorrow' => $date_tomorow,
+    //         'app_no' => $app_no,
+    //         'message' => $message
+    //     ];
 
-        return response()->json($res);
-    }
+    //     return response()->json($res);
+    // }
 }
