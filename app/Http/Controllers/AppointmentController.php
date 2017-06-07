@@ -47,13 +47,14 @@ class AppointmentController extends Controller
 
         foreach($appoints as $a){
             $events[] = \Calendar::event(
-                $a->detail.$a->name.' '.$a->lname, //event title
+                $a->detail.$a->name.' '.$a->lname. ' ( แพทย์ผู้นัด ' .$a->name_doctor. ' )', //event title
                 true, //full day event
                 $a->app_date, //START TIME
                 $a->app_date, //END TIME
                 $a->id, //event id
                 [
-                    'url' => '#'
+                    'color' => $a->color_code,
+                    //'url' => ''
                 ] // url when click
             );
         }
@@ -61,11 +62,21 @@ class AppointmentController extends Controller
         $data['calendar']= \Calendar::addEvents($events)
                     ->setOptions([
                         'firstDay' => 1,
-                        'eventClick' => function(){
-                            alert('555555555');
-                        }
                     ])->setCallbacks([
                         // 'viewRender' => 'function() {alert("Callbacks!");}'
+                        // 'eventRender' => "function(event, element) {
+                        //     $(element).tooltip({title: event.title}); 
+                        // }"
+                        // 'eventRender' => "function(event, element) {
+                        //     $(element).popover({title: event.title, content: event.description, trigger: 'hover', placement: 'auto right', delay: {'hide': 100 }});             
+                        // }"
+                        'eventRender' => "function(event, element) {
+                            $(element).tooltip({title: event.title, trigger: 'hover', placement: 'right', delay: {'hide': 100 }});             
+                        }",
+                        'eventClick' => "function(calEvent, jsEvent, view){
+                                var eventId = calEvent.id
+                                $('#modalViewPatient').modal()
+                        }"
                     ]);
 
         // return response()->json($events);

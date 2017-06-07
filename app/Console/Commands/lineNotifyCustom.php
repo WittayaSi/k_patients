@@ -40,6 +40,12 @@ class lineNotifyCustom extends Command
     public function handle()
     {
         //
+        $this->lineNotification();
+        
+    }
+
+    private function lineNotification()
+    {
         $date_tomorow = date('Y-m-d', strtotime('tomorrow'));
 
         $appoint_tomorrow = DB::select('
@@ -74,14 +80,5 @@ class lineNotifyCustom extends Command
 
         }
         //end line notify
-
-        // $res = [
-        //     'rawData' => $appoint_tomorrow,
-        //     'date_tomorrow' => $date_tomorow,
-        //     'app_no' => $app_no,
-        //     'message' => $message
-        // ];
-
-        // return response()->json($res);
     }
 }

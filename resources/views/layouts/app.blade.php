@@ -15,12 +15,18 @@
     <link rel="stylesheet" href="{{ asset('css/app-style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sweetalert.css') }}">
-    <link rel="stylesheet" href="{{ asset('fullcalendar/fullcalendar.css') }}">
+    <link rel="stylesheet" href="{{ asset('fullcalendar/fullcalendar.min.css') }}">
+    <!--<link rel="stylesheet" href="{{ asset('fullcalendar/fullcalendar.print.min.css') }}">-->
 
     <!-- Scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" charset="utf-8"></script>
+    <!--<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>-->
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('fullcalendar/moment.min.js') }}"></script>
+    <script src="{{ asset('/fullcalendar/fullcalendar.js') }}"></script>
+    <script src="{{ asset('/fullcalendar/locale/th.js') }}"></script>
+    <!--<script src="{{ asset('fullcalendar/gcal.min.js') }}"></script>
+    <script src="{{ asset('fullcalendar/locale-all.js') }}"></script>-->
 
 </head>
 <body>
@@ -149,12 +155,10 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/js/vue.min.js')}}"></script>
     <script src="{{ asset('/js/vue-resource.min.js')}}"></script>
     <script src="{{ asset('/js/axios.min.js')}}"></script>
-    <script src="{{ asset('/fullcalendar/fullcalendar.js') }}"></script>
-    <script src="{{ asset('/fullcalendar/locale/th.js') }}"></script>
     @stack('scripts')
     
 </body>

@@ -6,8 +6,6 @@
     
         @include('patients.modal.modal_add_patient')
         @include('patients.modal.modal_view_patient')
-        
-        
 
         <div class="row">
             <div class="col-md-12">
@@ -67,6 +65,7 @@
                                                     <th style="text-align: center">รหัส (HN)</th>
                                                     <th style="text-align: center">ชื่อ - สกุล</th>
                                                     <th style="text-align: center">อาการป่วย</th>
+                                                    <th style="text-align: center">อายุ(ปี)</th>
                                                     <th style="text-align: center">ที่อยู่</th>
                                                     <th style="text-align: center">จัดการ</th>
                                                 </tr>
@@ -76,7 +75,8 @@
                                                     <!--<td width="10%" style="text-align: center">@{{ p.hospcode }}</td>-->
                                                     <td width="7%" style="text-align: center">@{{ p.hn }}</td>
                                                     <td width="20%">@{{ p.detail }}@{{ p.name }}  @{{ p.lname }}</td>
-                                                    <td width="35%">@{{ p.name_disease }}</td>
+                                                    <td width="28%">@{{ p.name_disease | showStringDisease }}</td>
+                                                    <td width="7%" style="text-align: center">@{{ p.birth | calAges }}</td>
                                                     <td width="26%">@{{ p.add_no }} หมู่ที่ @{{ p.moo }}  @{{ p.vill_name }} @{{ p.tambonname }}</td>
                                                     <td width="12%" style="text-align: center">
                                                         <div class="btn-group">

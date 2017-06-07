@@ -67,18 +67,18 @@ new Vue({
     methods: {
         fetchData() {
             this.$http.get('/home/getNowAppoint').then((res) => {
-                console.log(res.data.rawData)
-                console.log(res.data.date_now)
+                //console.log(res.data.rawData)
+                //console.log(res.data.date_now)
                 this.app_now = res.data.rawData
             })
-        },
-        lineNotify() {
-            this.$http.get('/home/lineNotify').then((res) => {
-                console.log(res.data.rawData)
-                console.log(res.data.date_tomorrow)
-                console.log(res.data.app_no)
-                console.log(res.data.message)
-            })
         }
+        // lineNotify() {
+        //     this.$http.get('/home/lineNotify').then((res) => {
+        //         console.log(res.data.rawData)
+        //         console.log(res.data.date_tomorrow)
+        //         console.log(res.data.app_no)
+        //         console.log(res.data.message)
+        //     })
+        // }
     }
 })

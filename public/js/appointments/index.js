@@ -21,6 +21,9 @@ new Vue({
             c_doctor: doctor,
             c_patient: patient
         },
+        appointments: {},
+        ind_patient: '',
+        modal_data: ''
     },
 
     created() {
@@ -29,6 +32,14 @@ new Vue({
         console.log(this.codes.c_patient)
     },
     methods: {
+        getPatient(id_no) {
+            this.fetchAppointment(id_no)
+            this.$http.post('/api/getPatientByIdNo', id_no).then((res) => {
+                var p_data = res.data.rawData
+                this.ind_patient = p_data
+                this.newApp.id_no = id_no
+            })
+        },
         addNewAppoint() {
             $('#modalAppointment').modal('hide')
             var newAppoint = this.newApp
@@ -47,6 +58,22 @@ new Vue({
                 console.log(error)
             })
 
+        },
+        fetchAppointment(id) {
+            console.log(id)
+            this.$http.post('/api/getAppointment', id).then((res) => {
+                console.log(res.data.rawData)
+                this.appointments = res.data.rawData
+            })
+        },
+        clearAppointment(id) {
+            console.log(id)
+            this.newApp.id_no = id
+            this.newApp.hosp_ref = ''
+            this.newApp.doctor = ''
+            this.newApp.app_date = ''
+            this.newApp.app_detail = ''
+            this.newApp.app_other = ''
         },
     }
 })

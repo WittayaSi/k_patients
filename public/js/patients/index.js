@@ -1,4 +1,4 @@
-new Vue({
+var vueSpace = new Vue({
     http: {
         root: '/root',
         headers: {
@@ -115,6 +115,17 @@ new Vue({
     },
 
     filters: {
+        showStringDisease(data) {
+            if (data.length > 42) {
+                return data.substr(0, 42) + "..."
+            } else {
+                return data
+            }
+        },
+        calAges(b) {
+            var ages = moment().diff(moment(b, 'YYYYMMDD'), 'years')
+            return ages
+        },
         getDate(date) {
             const d = new Date(date)
             const m = [

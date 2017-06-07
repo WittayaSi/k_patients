@@ -108,7 +108,12 @@ body {
     overflow-y: auto;
 }
 
-#calendar {
+
+/*#calendar {
     max-height: calc(100vh - 210px);
     overflow-y: auto;
+}*/
+
+.fc-event {
+    cursor: pointer;
 }
