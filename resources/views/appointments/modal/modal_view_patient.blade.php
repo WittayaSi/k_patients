@@ -11,7 +11,10 @@
             </div>
 
             <div class="modal-body">
-
+                <div id="eventId"></div>
+                <?php
+                    
+                ?>
             </div>
             <div class="modal-footer">
                 <button type="reset" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> ยกเลิก</button>

@@ -54,7 +54,7 @@ class AppointmentController extends Controller
                 $a->id, //event id
                 [
                     'color' => $a->color_code,
-                    //'url' => ''
+                    //'url' => 'http://localhost:8000/patient#modalViewPatient'
                 ] // url when click
             );
         }
@@ -71,11 +71,12 @@ class AppointmentController extends Controller
                         //     $(element).popover({title: event.title, content: event.description, trigger: 'hover', placement: 'auto right', delay: {'hide': 100 }});             
                         // }"
                         'eventRender' => "function(event, element) {
-                            $(element).tooltip({title: event.title, trigger: 'hover', placement: 'right', delay: {'hide': 100 }});             
+                            $(element).tooltip({title: event.title, trigger: 'hover', placement: 'right', delay: {'hide': 100 }})         
                         }",
                         'eventClick' => "function(calEvent, jsEvent, view){
-                                var eventId = calEvent.id
-                                $('#modalViewPatient').modal()
+                            var eventId = calEvent.id
+                            $('#eventId').html(calEvent.id)
+                            $('#modalViewPatient').modal()
                         }"
                     ]);
 
@@ -112,6 +113,7 @@ class AppointmentController extends Controller
         $appoint->app_detail = $request['app_detail'];
         $appoint->doctor_id = $request['doctor'];
         $appoint->others = $request['app_other'];
+        $appoint->user_created = $request['userId'];
 
         if($appoint->save()){
             $res = [
@@ -167,5 +169,6 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         //
+        Appointment::destroy($id);
     }
 }

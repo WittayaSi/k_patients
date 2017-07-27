@@ -28,6 +28,9 @@ Route::resource('/patient', 'PatientController');
 Route::resource('/appointment', 'AppointmentController');
 
 Route::get('/home/getNowAppoint', 'HomeController@getNowAppoint');
+Route::get('/home/getTomorAppoint', 'HomeController@getTomorAppoint');
+Route::get('/home/getGroupByDoctorToday', 'HomeController@getGroupByDoctorToday');
+Route::get('/home/getGroupByDoctorTomorrow', 'HomeController@getGroupByDoctorTomorrow');
 Route::get('/home/lineNotify', 'HomeController@lineNotify');
 
 // Api router
@@ -36,6 +39,7 @@ Route::post('/api/getPatientByIdNo', 'ApiController@getPatientByIdNo');
 Route::post('/api/getPatientByFullName', 'ApiController@getPatientByFullName');
 Route::post('/api/getPatientByHosId', 'ApiController@getPatientByHosId');
 Route::post('/api/getAppointment', 'ApiController@getAppointment');
+Route::post('/api/saveImage', 'ApiController@saveImage');
 
 Route::get('/test', function() {
 

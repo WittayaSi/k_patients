@@ -28,6 +28,9 @@
     <!--<script src="{{ asset('fullcalendar/gcal.min.js') }}"></script>
     <script src="{{ asset('fullcalendar/locale-all.js') }}"></script>-->
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.3/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.3/js/bootstrap-colorpicker.min.js"></script> 
+
 </head>
 <body>
     <div id="app">

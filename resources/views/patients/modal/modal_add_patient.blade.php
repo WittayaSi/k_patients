@@ -8,10 +8,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <center><h4 class="modal-title" id="myModalLabel"><i class="fa fa-user-plus fa-lg"></i>&nbsp&nbsp ข้อมูลผู้ป่วยรายใหม่</h4></center>
                 </div>
+                <!--start create-->
                 <div class="modal-body">
-                    
                     <!-- form input-->
                     <div class="row">
+                        <input type="hidden" ref="user_id_add" value="<?php echo Auth::user()->id; ?>">
                         <div class="form-group col-md-5">
                             <label for="hospcode">สถานบริการที่รับผิดชอบ</label>
                             <select name="hospcode" v-model="newPatient.hospcode" class="form-control" id="hospcode" required='required'>
@@ -21,17 +22,7 @@
                         </div>
                         <div class="form-group{{ $errors->has('idNo') ? ' has-error' : '' }} col-md-5">
                             <label for="idNo">เลขบัตรประชาชน</label>
-                            <input type="text" name="idNo" v-model="newPatient.idNo" class="form-control" id="idNo" placeholder="กรอกเลขบัตรประชาชน" required="required">
-                            <!--@if(Session::has('errors'))
-                                <script>
-                                    $(document).ready(function(){
-                                        $('#myModal').modal({show: true});
-                                    })
-                                </script>
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif-->
+                            <input type="text" name="idNo" v-model="newPatient.idNo" class="form-control" id="idNo" placeholder="กรอกเลขบัตรประชาชน" required="required" maxlength="13" minlength="13">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="hn">รหัส HN</label>
@@ -50,7 +41,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="preName">คำนำหน้าชื่อ</label>
-                            <select name="preName" v-model="newPatient.preName" class="form-control" id="preName" required='required' @change="changeGender">
+                            <select name="preName" v-model="newPatient.preName" class="form-control" id="preName" required='required' @change="changeGender('c')">
                                 <option  value="">เลือกคำนำหน้าชื่อ</option>
                                 <option v-for="p in codes.preName" :value="p.id_prename">@{{ p.id_prename }}-@{{ p.prename }}</option>
                             </select>
@@ -157,6 +148,8 @@
                     <!-- end form input-->
 
                 </div>
+                <!--end create-->
+
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> ยกเลิก</button>
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i> บันทึก</button>

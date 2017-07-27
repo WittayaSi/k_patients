@@ -14,7 +14,8 @@ new Vue({
             doctor: '',
             app_date: '',
             app_detail: '',
-            app_other: ''
+            app_other: '',
+            userId: ''
         },
         codes: {
             c_hos_ref: hos_ref,
@@ -41,7 +42,9 @@ new Vue({
             })
         },
         addNewAppoint() {
-            $('#modalAppointment').modal('hide')
+            $('#modalAppointment_c').modal('hide')
+
+            this.newApp.userId = this.$refs.user_id.value
             var newAppoint = this.newApp
             this.$http.post('/appointment', newAppoint).then((res) => {
                 if (res.data.success === 'successfully') {
@@ -51,7 +54,7 @@ new Vue({
                         window.location.href = '/appointment'
                     }, 1000)
                 } else {
-                    $('#modalAppointment').modal('show')
+                    $('#modalAppointment_c').modal('show')
                     alert("An insert is ERROR!!!!!!!!!!!!!!")
                 }
             }, (error) => {

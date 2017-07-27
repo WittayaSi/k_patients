@@ -3,9 +3,6 @@
 @section('content')
 <div class="container">
     <div id="vueApp">
-    
-        @include('patients.modal.modal_add_patient')
-        @include('patients.modal.modal_view_patient')
 
         <div class="row">
             <div class="col-md-12">
@@ -29,7 +26,9 @@
                                         <p style="text-align: center">
                                             <input type="radio" v-model="option" value="b"> สถานบริการ &nbsp&nbsp
                                             <input type="radio" v-model="option" value="a"> ชื่อ - นามสกุล
-                                            <a data-toggle="modal" data-target="#modalAddPatient" class="btn btn-primary pull-right" style="margin-top: -20px; margin-right: 10px; cursor:pointer;"><i class="fa fa-plus fa-fw"></i> เพิ่มผู้ป่วยรายใหม่ </a>
+                                            @if(Auth::user()->is_admin === 'Y')
+                                                <a data-toggle="modal" data-target="#modalAddPatient" class="btn btn-primary pull-right" style="margin-top: -20px; margin-right: 10px; cursor:pointer;" @click="buttonCall = 'create'"><i class="fa fa-plus fa-fw"></i> เพิ่มผู้ป่วยรายใหม่ </a>
+                                            @endif
                                         </p>
                                         <p v-if="option === 'b'" class="col-sm-4 col-sm-offset-4">
                                             <label for="hoscode">สถานบริการ</label>
@@ -62,7 +61,8 @@
                                             <thead>
                                                 <tr class="alert-info">
                                                     <!--<th style="text-align: center">รหัสสถานบริการ</th>-->
-                                                    <th style="text-align: center">รหัส (HN)</th>
+                                                    <th style="text-align: center">รูป</th>
+                                                    <th style="text-align: center">HN</th>
                                                     <th style="text-align: center">ชื่อ - สกุล</th>
                                                     <th style="text-align: center">อาการป่วย</th>
                                                     <th style="text-align: center">อายุ(ปี)</th>
@@ -72,17 +72,21 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="p in patients">
+                                                    <input id="user_c" type="hidden" :value="p.user_created">
                                                     <!--<td width="10%" style="text-align: center">@{{ p.hospcode }}</td>-->
-                                                    <td width="7%" style="text-align: center">@{{ p.hn }}</td>
-                                                    <td width="20%">@{{ p.detail }}@{{ p.name }}  @{{ p.lname }}</td>
+                                                    <td width="6%" style="text-align: center;" :bgcolor='p.color_code'><img class="img-circle" id="user_img" :src="p.img_name ? 'images/'+p.img_name : 'images/thumbnail.jpg'" width="30" height="30"></td>
+                                                    <td width="5%" style="text-align: center">@{{ p.hn }}</td>
+                                                    <td width="19%">@{{ p.detail }}@{{ p.name }}  @{{ p.lname }}</td>
                                                     <td width="28%">@{{ p.name_disease | showStringDisease }}</td>
-                                                    <td width="7%" style="text-align: center">@{{ p.birth | calAges }}</td>
+                                                    <td width="5%" style="text-align: center">@{{ p.birth | calAges }}</td>
                                                     <td width="26%">@{{ p.add_no }} หมู่ที่ @{{ p.moo }}  @{{ p.vill_name }} @{{ p.tambonname }}</td>
-                                                    <td width="12%" style="text-align: center">
+                                                    <td width="11%" style="text-align: center">
+                                                        
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalViewPatient" @click="getPatient(p.id_no)"><i class="fa fa-search"></i></button>
-                                                            <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></button>
+                                                            <button type="button" id="pShow" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalViewPatient" @click="getPatient(event,p.id_no)"><i class="fa fa-search"></i></button>
                                                             @if(Auth::user()->is_admin === 'Y')
+                                                                <button type="button" id="pEdit" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalUpdatePatient" @click="getPatient(event, p.id_no)"><i class="fa fa-pencil-square-o"></i></button>
+                                                            
                                                                 <button type="button" class="btn btn-danger btn-sm" @click="deletePatient(p.id_no)"><i class="fa fa-trash"></i></button>
                                                             @endif
                                                         </div>
@@ -125,6 +129,9 @@
                 </div>
             </div>
         </div>
+        @include('patients.modal.modal_add_patient')
+        @include('patients.modal.modal_update_patient')
+        @include('patients.modal.modal_view_patient')
     </div>
 </div>
 @endsection

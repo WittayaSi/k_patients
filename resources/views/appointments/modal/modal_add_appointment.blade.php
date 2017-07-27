@@ -12,7 +12,7 @@
                 <!-- form input-->
                 <!--<div class="fetched-data"></div>-->
                 <div class="row">
-                    
+                    <input type="hidden" ref="user_id" value="<?php echo Auth::user()->id; ?>">
                     <div class="form-group col-md-12">
                         <label for="id_no">ชื่อผู้ป่วย</label>
                         <select name="id_no" v-model="newApp.id_no" class="form-control" id="id_no" required='required'>

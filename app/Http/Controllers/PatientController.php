@@ -16,6 +16,7 @@ use App\Ctambon;
 use App\Patient;
 use App\Chospitalrefer;
 use App\Doctor;
+use App\Appointment;
 
 class PatientController extends Controller
 {
@@ -91,10 +92,6 @@ class PatientController extends Controller
         //     'pic_name' => 'image|mimes:jpeg,png,jpg',
         // ]);
 
-        $this->validate($request, [
-            'idNo' => 'max:13',
-        ]);
-
         //$strRand = substr(md5(microtime()),rand(0,26),5);
         //$strRand = rand(10000,50000);
         //$imageName = $request['hospcode'].$strRand;
@@ -123,6 +120,7 @@ class PatientController extends Controller
         $patient->tambon = $request['tambon'];
         $patient->ampur = $request['ampur'];
         $patient->changwat = $request['changwat'];
+        $patient->user_created = $request['userId'];
 
         $new_hn = (int)substr(($request['hn']),2);
 
@@ -175,7 +173,42 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
+        $patient = Patient::find($id);
+
+        $patient->id_no = $request['idNo'];
+        $patient->hospcode = $request['hospcode'];
+        $patient->hn = $request['hn'];
+        $patient->first_sick = $request['first_sick'];
+        $patient->recieve_date = $request['recieve_date'];
+        $patient->prename = $request['preName'];
+        $patient->name = $request['fName'];
+        $patient->lname = $request['lName'];
+        $patient->birth = $request['dob'];
+        $patient->sex = $request['sex'];
+        $patient->race = $request['race'];
+        $patient->nation = $request['nation'];
+        $patient->mstatus = $request['mStatus'];
+        $patient->education = $request['education'];
+        $patient->occupation = $request['occupation'];
+        $patient->religion = $request['religion'];
+        $patient->add_no = $request['address_no'];
+        $patient->moo = $request['moo'];
+        $patient->vill_name = $request['village'];
+        $patient->tambon = $request['tambon'];
+        $patient->ampur = $request['ampur'];
+        $patient->changwat = $request['changwat'];
+        $patient->user_created = $request['userId'];
+
+        
+        if($patient->save()){
+            $res = [
+                'success' => 'successfully'
+            ];
+            return response()->json($res);
+        }else{
+            return 'failed';
+        }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -186,6 +219,8 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-        Patient::destroy($id);
+        if(Appointment::where('id_no', '=', $id)->delete()){
+            Patient::destroy($id);
+        }
     }
 }

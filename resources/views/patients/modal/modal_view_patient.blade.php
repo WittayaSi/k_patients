@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content" v-for="p in ind_patient">
             <div class="modal-header alert alert-success">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" @click="clearImage">&times;</button>
                 <center><h4 class="modal-title" id="myModalLabel"><i class="fa fa-user-plus fa-lg"></i>&nbsp&nbsp ประวัติผู้ป่วย</h4></center>
             </div>
             <div class="modal-body">                
@@ -11,9 +11,27 @@
                 <div class="row">
                     <div class="col-md-3">
                         <a href="#" class="thumbnail">
-                            <img src="{{asset('images/thumbnail.jpg')}}" alt="thumbnail.jpg" width="225px">
+                            <!--<img src="{{asset('images/thumbnail.jpg')}}" alt="thumbnail.jpg" width="225px">-->
+                            <img :src="p.img_name ? 'images/'+p.img_name : img_data.img_patient ? img_data.img_patient : 'images/thumbnail.jpg'" alt="thumbnail.jpg" width="150px">
                         </a>
-                        <center><input type="file" class="btn btn-primary btn-sm" style="width: 150px;"></center>
+                        <div v-if="!uploadSuccess">
+                            <center>
+                                <form action="#" @submit.prevent="saveImage(p.id_no)" enctype="multipart/form-data">
+                                    <div v-if="!p.img_name">
+                                        <input type="file" ref="p_img" class="btn btn-primary btn-sm" style="width: 150px;" accept="image/*" @change="onImageChange">
+                                    </div>
+                                    <div v-if="img_data.img_patient">
+                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i> อัพโหลด</button>
+                                        <button type="reset" class="btn btn-default btn-sm" @click="removeImage"><i class="fa fa-times fa-fw"></i> ยกเลิก</button>
+                                    </div>
+                                </form>
+                            </center>
+                        </div>
+                        <div v-else>
+                            <center>
+                                <span class="label label-success">Success</span>
+                            </center>
+                        </div>
                     </div>
                     
                     <div class="col-md-9">
@@ -88,7 +106,9 @@
                     <div class="panel panel-success" style="width: 80%;">
                         <div class="panel-heading">
                             รายการนัดหมาย 3 ครั้งหลังสุด
-                            <a data-toggle="modal" data-target="#modalAppointment" class="pull-right btn btn-primary btn-sm" style="margin-top: -20px;"><i class="fa fa-address-book fa-fw"></i> นัดหมายเพิ่ม</a>
+                            @if(Auth::user()->is_admin === 'Y')
+                                <a data-toggle="modal" data-target="#modalAppointment" class="pull-right btn btn-primary btn-sm" style="margin-top: -20px;"><i class="fa fa-address-book fa-fw"></i> นัดหมายเพิ่ม</a>
+                            @endif
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -110,7 +130,7 @@
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></button>
                                                     @if(Auth::user()->is_admin === 'Y')
-                                                        <button type="button" class="btn btn-danger btn-sm" @click="deletePatient(a.id)"><i class="fa fa-trash"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm" @click="deleteAppoint(a.id,a.id_no)"><i class="fa fa-trash"></i></button>
                                                     @endif
                                                 </div>
                                             </td>
@@ -128,7 +148,7 @@
 
                 <div class="row">
                     <!-- Last 3 treatments -->
-                    <center>
+                    <!--<center>
                     <div class="panel panel-info" style="width: 95%;">
                         <div class="panel-heading">
                             รายละเอียดการรักษา
@@ -165,7 +185,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <!-- End last 3 treatments -->
                 </div>
                 <!-- End patient detail-->
@@ -193,6 +213,7 @@
                 <!-- form input-->
                 <!--<div class="fetched-data"></div>-->
                 <div class="row">
+                    <input type="hidden" ref="user_id" value="<?php echo Auth::user()->id; ?>">
                     <div class="form-group col-md-5">
                         <label for="hosp_ref">โรงพยาบาลที่นัด</label>
                         <select name="hosp_ref" v-model="newApp.hosp_ref" class="form-control" id="hosp_ref" required='required'>
